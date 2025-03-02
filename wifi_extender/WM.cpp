@@ -40,8 +40,7 @@ JsonObject obj = Config.as<JsonObject>();
           for (int i = 0; i < n; ++i) {
             String router = WiFi.SSID(i);
             Serial.println(router);
-            network_html += "<input type=\"radio\" id=\"#radiobuttonex\" name=\"ssid\" value=" + router + " required ><label for=\"html\">" + router + "</label><<br>";
-
+            network_html += "<label><input type=\"radio\" name=\"scanned_ssid\" onclick=\"document.getElementById('ssid').value='"+router+"'\" >" + router + "</label><br>";
           }
           WiFi.scanDelete();
           if (WiFi.scanComplete() == -2) {
@@ -60,9 +59,10 @@ JsonObject obj = Config.as<JsonObject>();
         html += "<p>networks found </p>";
         html += "<form action=\"/credentials\">";
         html += "<p>Please select a WiFi network:</p>" + network_html;
-        html += "<input type=\"password\" id=\"pass\" name=\"pass\" value=\"\" required ><label for=\"pass\">password</label><br><br>";
-        html += "<input type=\"text\" id=\"ap\" name=\"ap\" value=\"\" required ><label for=\"ap\">A.P name:</label><br>";
-        html += "<input type=\"submit\" value=\"Submit\">";
+        html += "<br><br><label for=\"pass\"> ssid: </label><br><input type=\"text\" id=\"ssid\" name=\"ssid\" value=\"\" required >";
+        html += "<br><br><label for=\"pass\"> password: </label><br><input type=\"password\" id=\"pass\" name=\"pass\" value=\"\" required >";
+        html += "<br><br><label for=\"ap\">A.P name: </label><br><input type=\"text\" id=\"ap\" name=\"ap\" value=\"\" required >";
+        html += "<br><br><br><input type=\"submit\" value=\"Submit\">";
         html += "</form></body></html>";
         html+= "</div>";
 
@@ -124,13 +124,15 @@ JsonObject obj = Config.as<JsonObject>();
         File file = LittleFS.open(path, "w");
         if (!file) {
           Serial.println("Failed to open file for writing");
-          request->send(500, "text/plain", "Failed to open file for writing");
+          request->send(500, "text/plain", "Failed to open config file for writing");
           return;
         }
 
         if (file.print(output)) {
           Serial.println("File written");
-          request->send(200, "text/plain", "File written successfully");
+          request->send(200, "text/plain", "New Setting saved successfully");
+          delay(1000);
+          ESP.restart();
         } else {
           Serial.println("Write failed");
           request->send(500, "text/plain", "Write failed");

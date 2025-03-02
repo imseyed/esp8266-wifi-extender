@@ -23,9 +23,6 @@ Here are some features of my WiFi range extender:
 
 - Reset button to return to the factory setting
 
-Yup! That all there is to it. I built this extender to meet my own need and I hope it is able to meet your needs for this reason I can't say my WiFi extender is better than martin-ger esp-repeater which is packed with features such as auto mesh, MQTT, web config interface, CLI, WPA2 Enterprise Config, TCP/IP Config etc.
-
-Enough about martin-ger esp-repeater let's come back to my WiFi extender😥️.
 
 
 ### flashing with esptool

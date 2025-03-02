@@ -1,11 +1,12 @@
 
 /* 
- *  Author: Pius Onyema Ndukwu
+ *  Authors: Pius Onyema Ndukwu, Seyed Ali
  *  License: MIT License
- *  GitHub:https://github.com/Pius171/esp8266-wifi-extender
- *  
+ *  GitHub: https://github.com/imseyed/esp8266-wifi-extender
+ *  Forked From: https://github.com/Pius171/esp8266-wifi-extender
+ *
  */
-
+#define RESET_PIN 0
 #include "WM.h"
 // variables
 bool RepeaterIsWorking= true;
@@ -58,7 +59,7 @@ WM my_wifi;
 
 void setup() {
   delay(1000);
- pinMode(0,INPUT_PULLUP);
+ pinMode(RESET_PIN,INPUT_PULLUP);
  pinMode(LED_BUILTIN,OUTPUT);
  digitalWrite(LED_BUILTIN,1); //active low
   Serial.begin(115200);
@@ -89,7 +90,7 @@ start_webserver:
     IPAddress myIP = WiFi.softAPIP();
     Serial.print("AP IP address: ");
     Serial.println(myIP);
-    WiFi.softAP("Pius_Electronics_extender0001");
+    WiFi.softAP("ESP WiFi Extender");
     Serial.printf("AP: %s\n", WiFi.softAPIP().toString().c_str());
     my_wifi.create_server();
     //server.begin();
@@ -103,7 +104,7 @@ start_webserver:
     int timeout_counter=0;
     while (WiFi.status() != WL_CONNECTED) {
       if(timeout_counter>=120){
-        goto start_webserver; // if it fails to connect start_webserver
+        goto start_webserver; // if it fails to connect start_webserver after 60 seconds
       }
 
       Serial.print('.');
@@ -131,10 +132,10 @@ start_webserver:
     Serial.printf("AP: %s\n", WiFi.softAPIP().toString().c_str());
 
     Serial.printf("Heap before: %d\n", ESP.getFreeHeap());
-    err_t ret = ip_napt_init(NAPT, NAPT_PORT);
+    err_t ret = ip_napt_init(NAPT, NAPT_PORT); // Initialize NAPT
     Serial.printf("ip_napt_init(%d,%d): ret=%d (OK=%d)\n", NAPT, NAPT_PORT, (int)ret, (int)ERR_OK);
     if (ret == ERR_OK) {
-      ret = ip_napt_enable_no(SOFTAP_IF, 1);
+      ret = ip_napt_enable_no(SOFTAP_IF, 1); // Enable NAPT for esp AP
       Serial.printf("ip_napt_enable_no(SOFTAP_IF): ret=%d (OK=%d)\n", (int)ret, (int)ERR_OK);
       if (ret == ERR_OK) {
         Serial.printf("Successfully NATed to WiFi Network '%s' with the same password", ssid.c_str());
@@ -161,7 +162,7 @@ void setup() {
 #endif
 
 void loop() {
-  if(digitalRead(0)==LOW){
+  if(digitalRead(RESET_PIN)==LOW){
     LittleFS.format();
     ESP.restart();
   }
