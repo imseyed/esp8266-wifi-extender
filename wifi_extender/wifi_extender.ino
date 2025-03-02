@@ -120,8 +120,8 @@ start_webserver:
                   WiFi.dnsIP(1).toString().c_str());
 
     // give DNS servers to AP side
-    dhcpSoftAP.dhcps_set_dns(0, WiFi.dnsIP(0));
-    dhcpSoftAP.dhcps_set_dns(1, WiFi.dnsIP(1));
+    auto& server1 = WiFi.softAPDhcpServer();
+    server1.setDns(WiFi.dnsIP(0));
 
     WiFi.softAPConfig(  // enable AP, with android-compatible google domain
       IPAddress(172, 217, 28, 254),

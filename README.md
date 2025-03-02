@@ -1,12 +1,19 @@
-note: the latest version of the esp8266 board on Arduino board manager won't work for this project, downgrade to version 3.00 or just use the binary files
 # esp8266-wifi-extender
-My mum has a portable WiFi device which is most time in her room, so the WiFi doesn't get to the living room and that's a problem but I love to solve problems so i did some _googling_ and I found a GitHub repository for an ESP8266 repeater by martin-ger,the repo had a binary file for the repeater so I just flashed it into my esp8266 using _esptool_ and it worked like magic. Click [here](https://github.com/martin-ger/esp_wifi_repeater) to access the repository; however, there were some problems I had with this repeater(extender):
 
-- The web ui interface can't scan for WiFi networks so I don't know when I am in the range of the router unless I use the serial interface.
+This project https://github.com/imseyed/esp8266-wifi-extender is forked from https://github.com/Pius171/esp8266-wifi-extender
 
-- Debugging can be carried out by noting the rate at which the led is blinking, but there a catch, the led state when it is connected to the router and when my phone connects to it as an access point is the same, so I get confused because I can't tell if is connected to the router or if my phone is connected to it.
+Since I love ESP boards, especially the ESP8266, I was looking for a lightweight solution to extend my WiFi range and connect a network of various nodes.
 
-Due to this, I decided to build mine and fortunately, Arduino had an [example](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/examples/RangeExtender-NAPT/RangeExtender-NAPT.ino) for a WiFi range extender, so i Just added a WiFi manager and viola you have a WiFi range extender. Here are some features of my WiFi range extender:
+I found Pius171's project to be a lightweight WiFi extender code that works well for IoT devices and can be used alongside other firmware components. However, as Pius171 himself mentioned, it was not compatible with newer versions of the ESP8266.
+
+I have now upgraded it to support newer ESP8266 versions, and you can use it properly.
+
+In this version, various protocols such as MQTT, SNMP, DNS, and HTTP have been tested, and all of them work flawlessly.
+
+---
+> Main project Quote:
+
+Here are some features of my WiFi range extender:
 
 - Scan for networks (refresh the page to scan)
 
@@ -20,8 +27,6 @@ Yup! That all there is to it. I built this extender to meet my own need and I ho
 
 Enough about martin-ger esp-repeater let's come back to my WiFi extender😥️.
 
-## Uploading the code
-You can get the code from my [GitHub repository](https://github.com/Pius171/esp8266-wifi-extender). You can either flash your esp8266 with the bin file or you can edit the .ino file as you please ( I will be sure to look up any pull requests) and upload to your board.
 
 ### flashing with esptool
 **First install esptool**

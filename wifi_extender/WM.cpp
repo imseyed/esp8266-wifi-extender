@@ -84,7 +84,7 @@ JsonObject obj = Config.as<JsonObject>();
         
         });
 
-      // Send a GET request to <IP>/get?message=<message> 
+      // Send a GET request to <IP>/get?message=<message>
       server.on("/credentials", HTTP_GET, [] (AsyncWebServerRequest * request) {
         String param = "ssid";
 
@@ -124,12 +124,16 @@ JsonObject obj = Config.as<JsonObject>();
         File file = LittleFS.open(path, "w");
         if (!file) {
           Serial.println("Failed to open file for writing");
-          return "null";
+          request->send(500, "text/plain", "Failed to open file for writing");
+          return;
         }
+
         if (file.print(output)) {
           Serial.println("File written");
+          request->send(200, "text/plain", "File written successfully");
         } else {
           Serial.println("Write failed");
+          request->send(500, "text/plain", "Write failed");
         }
         file.close();
 
